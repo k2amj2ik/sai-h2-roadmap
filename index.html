@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAI 하반기 로드맵 2026.07–12</title>
+<style>
+  :root{
+    --page:#f9f9f7; --surface:#fcfcfb;
+    --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --ring:rgba(11,11,11,0.10);
+    --t1:#2a78d6; /* 답변 고도화 */
+    --t2:#1baf7a; /* 어드민 */
+    --t3:#eda100; /* 디자인2.0 */
+    --t4:#008300; /* 보고서 모듈 */
+    --t5:#4a3aa7; /* 컨텐츠 모듈 */
+    --t6:#e34948; /* 잔여 기획·운영 */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{
+    font-family:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    background:var(--page); color:var(--ink); font-size:14px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px 72px}
+
+  /* ── 헤더: 도록 표지 플레이트 ── */
+  header.plate{background:var(--ink);color:#fff;margin:0 -28px;padding:34px 36px 30px}
+  .plate-in{max-width:1108px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .eyebrow{font-size:11px;letter-spacing:.22em;color:#c3c2b7;text-transform:uppercase;margin-bottom:10px}
+  h1{font-size:34px;font-weight:800;letter-spacing:-0.02em;line-height:1.15}
+  h1 small{display:block;font-size:15px;font-weight:400;color:#c3c2b7;letter-spacing:0;margin-top:8px}
+  .plate-meta{text-align:right;font-size:12px;color:#c3c2b7;line-height:1.9}
+  .plate-meta b{color:#fff;font-weight:700}
+
+  /* ── 공통 섹션 ── */
+  section{margin-top:44px}
+  .sec-label{font-size:11px;letter-spacing:.2em;color:var(--ink-3);margin-bottom:14px;font-weight:700}
+  .sec-label em{font-style:normal;color:var(--ink);margin-right:8px}
+
+  /* ── 확정 방향 카드 ── */
+  .decisions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .dcard{background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:16px 18px}
+  .dcard h3{font-size:12px;color:var(--ink-3);font-weight:600;margin-bottom:6px}
+  .dcard p{font-size:14px;font-weight:700;line-height:1.4}
+  .dcard span{display:block;font-size:12px;font-weight:400;color:var(--ink-2);margin-top:6px}
+
+  /* ── 간트 ── */
+  .board{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:26px 26px 20px;overflow-x:auto}
+  .board-scroll{min-width:960px}
+  .gantt{display:grid;grid-template-columns:150px 1fr;row-gap:0}
+  .g-side{padding:10px 14px 10px 2px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;border-top:1px solid var(--grid)}
+  .g-side .chip{width:10px;height:10px;border-radius:3px;flex:none}
+  .g-side small{display:block;font-weight:400;color:var(--ink-3);font-size:11px}
+  .g-row{position:relative;display:grid;grid-template-columns:repeat(12,1fr);align-items:center;border-top:1px solid var(--grid);min-height:52px;column-gap:0}
+  .g-head{border-top:none!important}
+  .g-head-row{border-top:none;min-height:30px}
+  .month{grid-column:span 2;font-size:12px;color:var(--ink-2);font-weight:700;padding:4px 0 8px;border-left:1px solid var(--grid);text-align:center}
+  .month:first-child{border-left:none}
+  .g-row .cell{height:100%;border-left:1px solid var(--grid)}
+  .g-row .cell:nth-child(odd){border-left-style:dashed;border-left-color:#eeede7}
+  .g-row .cell:first-child{border-left:none}
+  .cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);pointer-events:none}
+  .bar{
+    position:relative;z-index:2;margin:8px 3px;height:30px;border-radius:4px;
+    display:flex;align-items:center;padding:0 9px;font-size:11.5px;font-weight:600;color:var(--ink);
+    background:color-mix(in srgb, var(--c) 14%, #ffffff);
+    border-left:4px solid var(--c); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--c) 32%, transparent);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .bar.soft{opacity:.62}
+  .g-row .star{position:absolute;z-index:3;top:50%;transform:translate(-50%,-50%);font-size:17px;color:var(--c);text-shadow:0 0 0 var(--c), 0 1px 0 rgba(11,11,11,.25);line-height:1}
+  .g-track{--c:var(--ink)}
+  .tr1{--c:var(--t1)} .tr2{--c:var(--t2)} .tr3{--c:var(--t3)}
+  .tr4{--c:var(--t4)} .tr5{--c:var(--t5)} .tr6{--c:var(--t6)}
+
+  /* 마일스톤 스트립 */
+  .mstrip{position:relative;height:74px;margin:2px 0 6px;grid-column:2}
+  .mstrip .axis{position:absolute;left:0;right:0;bottom:10px;border-bottom:2px solid var(--baseline)}
+  .flag{position:absolute;bottom:10px;transform:translateX(-50%);text-align:center;width:120px}
+  .flag .pin{width:2px;height:14px;background:var(--ink);margin:0 auto}
+  .flag .tag{display:inline-block;background:var(--ink);color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:3px 7px;line-height:1.3;letter-spacing:.01em}
+  .flag .tag i{font-style:normal;display:block;font-weight:400;color:#c3c2b7;font-size:10px}
+  .flag.minor .tag{background:#fff;color:var(--ink);border:1px solid var(--baseline)}
+  .flag.minor .tag i{color:var(--ink-3)}
+  .flag.minor .pin{background:var(--baseline)}
+  .flag.end{transform:translateX(-100%);width:120px;text-align:right}
+  .flag.end .pin{margin:0 2px 0 auto}
+
+  /* 오늘 라인 — 전 트랙 관통 (위치는 2026-07-08 기준 3.8%) */
+  .g-row.g-track::after{content:"";position:absolute;left:3.8%;top:0;bottom:0;border-left:2px dashed color-mix(in srgb, var(--t6) 62%, transparent);z-index:3;pointer-events:none}
+  .today{position:absolute;top:0;bottom:0;width:0;z-index:4;pointer-events:none}
+  .today b{position:absolute;top:-2px;left:5px;font-size:10px;color:var(--t6);font-weight:700;white-space:nowrap;background:var(--surface);padding:0 3px}
+
+  /* ── 표 ── */
+  table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--ring);border-radius:8px;overflow:hidden;font-size:13px}
+  th{background:#f2f1ec;color:var(--ink-2);font-size:12px;text-align:left;padding:10px 14px;font-weight:700;border-bottom:1px solid var(--grid)}
+  td{padding:11px 14px;border-bottom:1px solid var(--grid);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.mo{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+  td .ms{font-weight:700}
+  td .ms.star::before{content:"★ ";color:var(--ink)}
+  .tick{color:var(--ink-3)}
+  tbody tr:hover{background:#f7f6f2}
+  td a{color:var(--t1);text-decoration:none;font-weight:600;white-space:nowrap}
+  td a:hover{text-decoration:underline}
+  td .wl{display:block;padding:2px 0}
+
+  /* ── 리스크 ── */
+  .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .rcard{background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:14px 16px;font-size:13px}
+  .rcard b{display:block;margin-bottom:4px}
+  .rcard .fix{color:var(--ink-2);margin-top:6px;padding-top:6px;border-top:1px dashed var(--grid)}
+  .rcard .fix::before{content:"대응 · ";font-weight:700;color:var(--ink)}
+
+  /* ── 2단 하단 ── */
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .panel{background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:16px 18px;font-size:13px}
+  .panel h3{font-size:13px;margin-bottom:10px}
+  .panel ol,.panel ul{padding-left:18px;display:grid;gap:7px}
+  .panel li b{font-weight:700}
+
+  footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--grid);font-size:11.5px;color:var(--ink-3);line-height:1.9}
+
+  @media (max-width:900px){
+    .decisions{grid-template-columns:1fr 1fr}
+    .risk-grid,.cols2{grid-template-columns:1fr}
+    h1{font-size:26px}
+  }
+  @media print{
+    body{background:#fff}
+    .board{overflow:visible}
+    header.plate{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="plate">
+  <div class="plate-in">
+    <div>
+      <div class="eyebrow">Seoul Auction Intelligence · 2026 하반기 계획</div>
+      <h1>SAI 하반기 로드맵
+        <small>2026.07 – 2026.12 · 12월 종착점 = 보고서·컨텐츠 모듈 라이브 (제품 기능 완성)</small>
+      </h1>
+    </div>
+    <div class="plate-meta">
+      작성 <b>2026-07-08</b> · v1.0 초안<br>
+      리뷰 <b>신미영 · 조효원</b><br>
+      원본 <b>01.계획/SAI_하반기_로드맵_20260708.md</b>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="sec-label"><em>01</em>확정 방향 — 2026-07-08 협의</div>
+  <div class="decisions">
+    <div class="dcard"><h3>12월 종착점</h3><p>제품 기능 완성</p><span>보고서 + 컨텐츠 모듈 라이브. 영업 성과는 별도 트랙 지원</span></div>
+    <div class="dcard"><h3>보고서 모듈</h3><p>2안 시의성 우선</p><span>답변이 미술시장 관련일 때 보고서 표시. 1안(주기형)은 내년</span></div>
+    <div class="dcard"><h3>컨텐츠 모듈</h3><p>2안 답변 연계 우선</p><span>답변에 관련 뉴스·전시 표시. 1안(즐겨찾기)은 내년</span></div>
+    <div class="dcard"><h3>디자인2.0</h3><p>9월 말 금융사 버전 기준</p><span>키아프는 현 디자인 + 답변 품질로 대응</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><em>02</em>타임라인 — 트랙 6 × 관문 6</div>
+  <div class="board"><div class="board-scroll">
+    <div class="gantt">
+
+      <div class="g-side g-head"></div>
+      <div class="g-row g-head-row g-head">
+        <div class="month">7월</div><div class="month">8월</div><div class="month">9월</div>
+        <div class="month">10월</div><div class="month">11월</div><div class="month">12월</div>
+      </div>
+
+      <div class="g-side g-head" style="border-top:none"></div>
+      <div class="mstrip">
+        <div class="axis"></div>
+        <div class="flag" style="left:16.67%"><span class="tag">보고서 PoC 완료<i>8월 초</i></span><div class="pin"></div></div>
+        <div class="flag" style="left:33.33%"><span class="tag">키아프 · 답변 1차 완성<i>9월 초</i></span><div class="pin"></div></div>
+        <div class="flag" style="left:50%"><span class="tag">금융사 영업 버전<i>9월 말</i></span><div class="pin"></div></div>
+        <div class="flag minor" style="left:66.67%"><span class="tag">중간 점검 1 · 보고서 라이브<i>10월 말</i></span><div class="pin"></div></div>
+        <div class="flag minor" style="left:83.33%"><span class="tag">중간 점검 2 · 컨텐츠 라이브<i>11월 말</i></span><div class="pin"></div></div>
+        <div class="flag minor end" style="left:100%"><span class="tag">하반기 목표 달성<i>12월 말</i></span><div class="pin"></div></div>
+      </div>
+
+      <div class="g-side tr1 g-track"><span class="chip" style="background:var(--t1)"></span><span>① 답변 고도화<small>템플릿 7종 + 재질문</small></span></div>
+      <div class="g-row tr1 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:1/4" title="개발 — 기획 이관 완료 상태에서 구현">개발 (이관 완료 → 구현)</div>
+        <div class="bar" style="grid-column:4/5" title="QA·튜닝 — 키아프 품질 목표, AA-1294 데이터 개선 포함">QA·튜닝</div>
+        <div class="bar" style="grid-column:7/9" title="경매기록·경매순위 필터링 다각화 — 6/24 결정, 키아프 이후 항목">필터링 다각화</div>
+        <span class="star" style="left:33.33%" title="9월 초 키아프 라이브">★</span>
+        <div class="today" style="left:3.8%"><b>오늘 7/8</b></div>
+      </div>
+
+      <div class="g-side tr2 g-track"><span class="chip" style="background:var(--t2)"></span><span>② 어드민<small>제휴사 · AI</small></span></div>
+      <div class="g-row tr2 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:1/5" title="제휴사어드민·AI어드민 개발">제휴사·AI 어드민 개발</div>
+        <div class="bar" style="grid-column:5/7" title="9월 초 완료 → 9월 말 사용량 모니터링 가동">완료 → 사용량 모니터링</div>
+        <div class="bar soft" style="grid-column:7/9">운영·보완</div>
+        <span class="star" style="left:33.33%" title="9월 초 어드민 완료">★</span>
+      </div>
+
+      <div class="g-side tr3 g-track"><span class="chip" style="background:var(--t3)"></span><span>③ 디자인2.0<small>초안 확보됨</small></span></div>
+      <div class="g-row tr3 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:1/3" title="초안 → 전 화면 상세 디자인 확정">상세 디자인 확정</div>
+        <div class="bar" style="grid-column:3/7" title="Front 전 화면 개발 적용">개발 적용</div>
+        <div class="bar soft" style="grid-column:7/9">영업 대응 보완</div>
+        <span class="star" style="left:50%" title="9월 말 금융사 버전 전면 적용">★</span>
+      </div>
+
+      <div class="g-side tr4 g-track"><span class="chip" style="background:var(--t4)"></span><span>④ 보고서 모듈<small>2안 시의성</small></span></div>
+      <div class="g-row tr4 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:1/3" title="작가별/시기별/경매별 자동생성 PoC">자동생성 PoC</div>
+        <div class="bar" style="grid-column:3/4" title="PoC 산출 기반 보고서 템플릿 사양 기획 (~8월 중순)">사양 기획</div>
+        <div class="bar" style="grid-column:4/5" title="보고서 템플릿 디자인 (8월 중순~말)">디자인</div>
+        <div class="bar" style="grid-column:5/9" title="보고서 템플릿 개발·답변 연동">개발·연동</div>
+        <div class="bar soft" style="grid-column:9/11">운영·튜닝</div>
+        <span class="star" style="left:16.67%" title="8월 초 PoC 완료">★</span>
+        <span class="star" style="left:66.67%" title="10월 말 보고서 모듈 라이브">★</span>
+      </div>
+
+      <div class="g-side tr5 g-track"><span class="chip" style="background:var(--t5)"></span><span>⑤ 컨텐츠 모듈<small>2안 답변 연계</small></span></div>
+      <div class="g-row tr5 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:5/7" title="전시·뉴스 데이터 수집 워크플로우 기획 — 현재 관련 데이터 없음 (선행 의존)">데이터 수집 기획</div>
+        <div class="bar" style="grid-column:7/9" title="수집 워크플로우 구축 + 컨텐츠 템플릿 개발">구축 + 템플릿 개발</div>
+        <div class="bar" style="grid-column:9/11" title="개발·답변 연동">개발·연동</div>
+        <div class="bar soft" style="grid-column:11/13">운영·튜닝</div>
+        <span class="star" style="left:83.33%" title="11월 말 컨텐츠 모듈 라이브">★</span>
+      </div>
+
+      <div class="g-side tr6 g-track"><span class="chip" style="background:var(--t6)"></span><span>⑥ 잔여 기획·운영<small>상시 진행</small></span></div>
+      <div class="g-row tr6 g-track">
+        <div class="cells"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+        <div class="bar" style="grid-column:1/13" title="하반기 상시 진행 — 이용 한도 초과 안내·해제(정책 수립부터 화면 반영까지 한 항목, 금융사 버전 전 완료) · AA-335 작품 이름 검색(진행 중, 키아프 전 목표) · 1:1채팅 첨부 용량 제한 · 채팅 안읽음 표시 보완 · 거래관리 검색 보완 · 매니저별 담당 컨설턴트 관리">상시 진행 — 한도 안내·해제 · AA-335 · 첨부 제한 · 안읽음 표시 · 거래검색·매니저 관리</div>
+      </div>
+
+    </div>
+  </div></div>
+</section>
+
+<section>
+  <div class="sec-label"><em>03</em>월별 상세</div>
+  <table>
+    <thead><tr><th style="width:70px">월</th><th style="width:220px">마일스톤</th><th>주요 작업</th><th style="width:250px">결정·의존</th></tr></thead>
+    <tbody>
+      <tr><td class="mo">7월</td><td>—</td>
+        <td>
+          <span class="wl">① 답변 템플릿 7종+재질문 버튼 구현 착수(이관 완료) · 시리즈 사전 전문가 sign-off</span>
+          <span class="wl">② 제휴사어드민(<a href="https://sablue.atlassian.net/browse/AA-865" target="_blank">AA-865</a>) · AI어드민(<a href="https://sablue.atlassian.net/browse/AA-27" target="_blank">AA-27</a>) 개발</span>
+          <span class="wl">③ 디자인2.0 전 화면 상세 디자인 확정</span>
+          <span class="wl">④ 보고서 자동생성 PoC 개발</span>
+          <span class="wl">⑥ 이용 한도 안내·해제 착수 · 작품 이름 검색(<a href="https://sablue.atlassian.net/browse/AA-335" target="_blank">AA-335</a>, 진행 중)</span>
+        </td>
+        <td class="tick">시리즈 사전 검토 일정 확정</td></tr>
+      <tr><td class="mo">8월</td><td><span class="ms star">보고서 PoC 완료 (초)</span></td>
+        <td>
+          <span class="wl">④ PoC 산출 기반 보고서 템플릿 사양 기획(~8월 중순) → 보고서 템플릿 디자인(8월 중순~말)</span>
+          <span class="wl">① 개발 마무리 → QA·튜닝 — 한글 작품명 데이터 개선(<a href="https://sablue.atlassian.net/browse/AA-1294" target="_blank">AA-1294</a>) 포함</span>
+          <span class="wl">③ 디자인2.0 개발 적용 착수</span>
+          <span class="wl">⑥ 1:1채팅 첨부파일 용량 제한</span>
+        </td>
+        <td class="tick">⚑ 파일럿 무료 종료(중순) → 유료 전환·과금 정책 확정</td></tr>
+      <tr><td class="mo">9월</td><td><span class="ms star">키아프 · 답변 1차 완성 (초)</span><br><span class="ms star">금융사 영업 버전 (말)</span></td>
+        <td>
+          <span class="wl">① 답변 템플릿 7종+재질문 라이브</span>
+          <span class="wl">② 어드민 완료 → 사용량 모니터링 가동</span>
+          <span class="wl">③ 디자인2.0 전면 적용</span>
+          <span class="wl">⑤ 전시·뉴스 데이터 수집 기획 착수</span>
+          <span class="wl">⑥ 이용 한도 안내·해제 완료(영업 버전 요건)</span>
+        </td>
+        <td class="tick">사용량 모니터링은 어드민 완료(초)에 의존</td></tr>
+      <tr><td class="mo">10월</td><td><span class="ms star">중간 점검 1 — 보고서 라이브 (말)</span></td>
+        <td>
+          <span class="wl">④ 보고서 템플릿 개발·연동 → 라이브</span>
+          <span class="wl">① 경매기록·경매순위 필터링 다각화(키아프 이후 항목)</span>
+          <span class="wl">⑤ 수집 워크플로우 구축 + 컨텐츠 템플릿 개발</span>
+          <span class="wl">⑥ 채팅 안읽음 표시 보완 · 금융사 데모 대응</span>
+        </td>
+        <td class="tick">보고서 노출 기준(미술시장 답변 판정) 확정</td></tr>
+      <tr><td class="mo">11월</td><td><span class="ms star">중간 점검 2 — 컨텐츠 라이브 (말)</span></td>
+        <td>
+          <span class="wl">⑤ 컨텐츠 모듈 개발·연동 → 라이브(뉴스·전시 답변 연계)</span>
+          <span class="wl">⑥ 거래관리 검색 보완 · 매니저별 담당 컨설턴트 관리</span>
+        </td>
+        <td class="tick">데이터 소스 범위는 9월 확정분 기준</td></tr>
+      <tr><td class="mo">12월</td><td><span class="ms star">하반기 목표 달성 (말)</span></td>
+        <td>
+          <span class="wl">④·⑤ 보고서·컨텐츠 모듈 운영·튜닝</span>
+          <span class="wl">⑥ 잔여 기획 마무리</span>
+        </td>
+        <td class="tick">—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="sec-label"><em>04</em>리스크 · 의존성</div>
+  <div class="risk-grid">
+    <div class="rcard"><b>1 · 9월 관문 집중 — 키아프(초)와 금융사 버전(말) 3주 간격</b>개발·QA 부하 중첩<div class="fix">디자인2.0을 금융사 버전 기준으로 분리(확정). 키아프 범위에 디자인 변경 미포함</div></div>
+    <div class="rcard"><b>2 · 답변 템플릿 개발 window 약 2개월 (7월~9월 초)</b>키아프 품질 미달 위험<div class="fix">기획 이관 완료로 착수 지연 없음. 지연 시 핵심(시세·경매) 우선 단계 오픈</div></div>
+    <div class="rcard"><b>3 · 컨텐츠 모듈은 전시·뉴스 데이터 수집이 선행</b>현재 관련 데이터 없음(6/5 회의) → 11월 말 라이브 지연 위험<div class="fix">9월 선착수. 소스 최소화(뉴스 우선, 전시 후속) 옵션 보유</div></div>
+    <div class="rcard"><b>4 · 시리즈 사전(114개) AI 1차안 — 전문가 sign-off 미완</b>시리즈 템플릿 정확도<div class="fix">7월 중 미술 전문가 검토 일정 확정</div></div>
+    <div class="rcard"><b>5 · AA-1294 한글 작품명 검색 결함 (영문 표기로 회피 중)</b>시세·경매기록 템플릿 정확도<div class="fix">키아프 전 데이터 개선을 ①트랙 QA에 포함</div></div>
+    <div class="rcard"><b>6 · 파일럿 무료 종료(8월 중순) 후 정책 공백</b>이용자 이탈·CS 발생<div class="fix">8월 초까지 유료 전환·한도 정책 확정(⑥트랙 한도 정책과 연계)</div></div>
+    <div class="rcard"><b>7 · 사용량 모니터링이 제휴사어드민 완료(9월 초)에 의존</b>금융사 버전 성립 전제<div class="fix">②트랙 일정 준수가 9월 말 관문의 선행 조건</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-label"><em>05</em>의사결정 필요 · 범위 제외</div>
+  <div class="cols2">
+    <div class="panel">
+      <h3>⚑ 로드맵 확정 시 함께 결정</h3>
+      <ol>
+        <li><b>유료 전환·과금 정책</b> — 무료 종료(8월 중순) 이후. 본서비스 유료 오픈 9월 타겟(5/11 팀장 미팅)과의 관계 재확정</li>
+        <li><b>컨텐츠 데이터 소스 범위</b> — 뉴스·전시 출처와 갱신 주기 (11월 라이브 역산 시 9월 확정 필요)</li>
+        <li><b>키아프 오픈 템플릿 범위 최종 확인</b> — 기준: 재질문 플로우 기획서(6/18) 템플릿 7종. 지연 시 단계 오픈 우선순위</li>
+        <li><b>디자인2.0 어드민 포함 여부</b> — 현재 Front 기준. 어드민 적용 여부·시점 별도 결정</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>하반기 범위 제외 (2027 검토)</h3>
+      <ul>
+        <li>보고서 모듈 <b>1안</b> — 이용자 기준 분기 주기형 자동 보고서</li>
+        <li>컨텐츠 모듈 <b>1안</b> — 즐겨찾기 기반 노출 (즐겨찾기 기능 신설 포함)</li>
+        <li>PDF 출력 보고서의 유료 플랜 범위/횟수 연계 상세</li>
+        <li>2단계 "AI 기반 미술자산 관리"(포트폴리오) 본격 개발 — 착수 시점 추후 재판단</li>
+        <li>전시정보-단건형(구글 지도) 등 6/5 회의 후순위 모듈</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  근거 — 답변 템플릿 범위·상태: 03.설계/06.답변모듈화/SAI_답변모듈_재질문플로우_기획서_20260618.md (기획 sign-off + 개발자 리뷰 2차 완료) ·
+  키아프 시즌 모듈 적용: 01.계획/01.회의록/20260605_회의록_답변템플릿_모듈화_기획_2차_리뷰.md ·
+  본서비스 유료 오픈 9월 타겟: 20260511_회의록_주간_팀장_미팅.md ·
+  필터링 다각화 "키아프 이후": Front 기획서 변경 내역 2026-06-24 ·
+  AA-335 상태 "진행 중": Jira 2026-07-08 확인<br>
+  관리 원본: 01.계획/SAI_하반기_로드맵_20260708.md — 내용 수정은 MD·HTML 동시 갱신
+</footer>
+
+</div>
+</body>
+</html>
